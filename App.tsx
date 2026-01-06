@@ -1,10 +1,11 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppState, LinkHistoryItem } from './types';
 import { generateWhatsAppLink, cleanPhoneNumber } from './utils/helpers';
 import { suggestMessage } from './services/geminiService';
 import Button from './components/Button';
 import HistoryItem from './components/HistoryItem';
+import { Phone } from 'lucide-react';
 
 const App: React.FC = () => {
   const [viewState, setViewState] = useState<AppState>('input');
@@ -16,7 +17,6 @@ const App: React.FC = () => {
   const [history, setHistory] = useState<LinkHistoryItem[]>([]);
   const [copiedHistoryId, setCopiedHistoryId] = useState<string | null>(null);
 
-  // Load history from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem('zaplink_history');
     if (saved) {
@@ -29,7 +29,7 @@ const App: React.FC = () => {
   }, []);
 
   const saveToHistory = (item: LinkHistoryItem) => {
-    const newHistory = [item, ...history].slice(0, 10); // Keep last 10
+    const newHistory = [item, ...history].slice(0, 10);
     setHistory(newHistory);
     localStorage.setItem('zaplink_history', JSON.stringify(newHistory));
   };
@@ -86,34 +86,33 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center p-4 md:p-8">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex flex-col items-center p-4 md:p-8">
+      <div className="w-full max-w-md relative z-10">
         {/* Header */}
-        <header className="mb-8 text-center">
-          <div className="inline-flex items-center justify-center p-3 bg-emerald-100 rounded-3xl mb-4">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04348 16.4522L2 22L7.54777 20.9565C8.88837 21.6244 10.4003 22 12 22Z" fill="#10B981" />
-              <path d="M16.5 14.5C16.5 14.5 15.5 16 14 16C12.5 16 10 13.5 8 10C8 8.5 9.5 7.5 9.5 7.5L9 5.5L7 6C6.5 6.5 6 7.5 6 8.5C6 11.5 8.5 15.5 11.5 17.5C12.5 18 13.5 17.5 14 17L15.5 15L16.5 14.5Z" fill="white" />
-            </svg>
+        <header className="mb-8 text-center flex flex-col items-center">
+          <div className="flex items-center justify-center w-20 h-20 bg-white rounded-3xl shadow-lg shadow-black/[0.03] border border-white mb-6 group transition-all hover:scale-105 active:scale-95">
+            <div className="w-14 h-14 bg-emerald-500 rounded-full flex items-center justify-center text-white shadow-xl shadow-emerald-500/20">
+              <Phone size={28} fill="currentColor" strokeWidth={0} />
+            </div>
           </div>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">ZapLink Pro</h1>
-          <p className="text-slate-500 mt-2">Gere links profissionais para o seu WhatsApp</p>
+          <h1 className="text-3xl font-bold text-slate-800 tracking-tight">ZapLink Pro</h1>
+          <p className="text-slate-500 mt-2 font-medium">Gere links profissionais para o seu WhatsApp</p>
         </header>
 
         {/* Main Card */}
-        <div className="bg-white rounded-[32px] shadow-xl shadow-slate-200/60 p-6 md:p-8 mb-8 border border-slate-100 transition-all duration-300">
+        <div className="bg-white/95 backdrop-blur-md rounded-[32px] shadow-2xl shadow-black/5 p-6 md:p-8 mb-8 border border-white/20 transition-all duration-300">
           {viewState === 'input' ? (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-slate-700 ml-1">Número do WhatsApp</label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">+55</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium tracking-wide">+55</span>
                   <input 
                     type="tel" 
                     placeholder="(00) 00000-0000"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full pl-14 pr-4 py-4 bg-slate-50 border-0 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:outline-none text-slate-900 transition-all"
+                    className="w-full pl-14 pr-4 py-4 bg-slate-50 border-0 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:outline-none text-slate-900 transition-all font-medium"
                   />
                 </div>
               </div>
@@ -124,7 +123,7 @@ const App: React.FC = () => {
                   <button 
                     onClick={handleAISuggestion}
                     disabled={isSuggesting}
-                    className="text-[10px] uppercase font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg hover:bg-emerald-100 disabled:opacity-50 transition-colors"
+                    className="text-[10px] uppercase font-bold text-emerald-600 bg-emerald-50 px-2 py-1.5 rounded-lg hover:bg-emerald-100 disabled:opacity-50 transition-colors"
                   >
                     {isSuggesting ? 'Sugerindo...' : '✨ Sugestão IA'}
                   </button>
@@ -134,7 +133,7 @@ const App: React.FC = () => {
                   rows={3}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full px-4 py-4 bg-slate-50 border-0 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:outline-none text-slate-900 transition-all resize-none"
+                  className="w-full px-4 py-4 bg-slate-50 border-0 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:outline-none text-slate-900 transition-all resize-none font-medium"
                 />
               </div>
 
