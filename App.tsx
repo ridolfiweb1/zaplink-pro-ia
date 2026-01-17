@@ -42,7 +42,7 @@ const App: React.FC = () => {
 
     const link = generateWhatsAppLink(phone, message);
     setGeneratedLink(link);
-    
+
     const newItem: LinkHistoryItem = {
       id: Math.random().toString(36).substr(2, 9),
       phone,
@@ -50,7 +50,7 @@ const App: React.FC = () => {
       url: link,
       timestamp: Date.now()
     };
-    
+
     saveToHistory(newItem);
     setViewState('result');
     setIsCopied(false);
@@ -107,8 +107,8 @@ const App: React.FC = () => {
                 <label className="text-sm font-semibold text-slate-700 ml-1">Número do WhatsApp</label>
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium tracking-wide">+55</span>
-                  <input 
-                    type="tel" 
+                  <input
+                    type="tel"
                     placeholder="(00) 00000-0000"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
@@ -120,20 +120,22 @@ const App: React.FC = () => {
               <div className="space-y-2">
                 <div className="flex justify-between items-center ml-1">
                   <label className="text-sm font-semibold text-slate-700">Mensagem (opcional)</label>
-                  <button 
+                  <button
                     onClick={handleAISuggestion}
-                    disabled={isSuggesting}
-                    className="text-[10px] uppercase font-bold text-emerald-600 bg-emerald-50 px-2 py-1.5 rounded-lg hover:bg-emerald-100 disabled:opacity-50 transition-colors"
+                    disabled={isSuggesting || !phone.trim()}
+                    className="text-[10px] uppercase font-bold text-emerald-600 bg-emerald-50 px-2 py-1.5 rounded-lg hover:bg-emerald-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    title={!phone.trim() ? 'Preencha o número primeiro' : ''}
                   >
                     {isSuggesting ? 'Sugerindo...' : '✨ Sugestão IA'}
                   </button>
                 </div>
-                <textarea 
-                  placeholder="Ex: Olá! Gostaria de fazer um orçamento."
+                <textarea
+                  placeholder={phone.trim() ? "Ex: Olá! Gostaria de fazer um orçamento." : "Preencha o número primeiro..."}
                   rows={3}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full px-4 py-4 bg-slate-50 border-0 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:outline-none text-slate-900 transition-all resize-none font-medium"
+                  disabled={!phone.trim()}
+                  className="w-full px-4 py-4 bg-slate-50 border-0 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:outline-none text-slate-900 transition-all resize-none font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
 
@@ -148,7 +150,7 @@ const App: React.FC = () => {
                 <p className="text-slate-800 font-medium break-all text-sm mb-6 bg-white/50 p-4 rounded-xl border border-emerald-200/50">
                   {generatedLink}
                 </p>
-                
+
                 <div className="flex flex-col gap-3">
                   <Button fullWidth onClick={() => handleCopy(generatedLink)}>
                     {isCopied ? (
@@ -169,7 +171,7 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              <button 
+              <button
                 onClick={resetForm}
                 className="text-slate-500 hover:text-slate-700 text-sm font-semibold transition-colors"
               >
@@ -185,9 +187,9 @@ const App: React.FC = () => {
             <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest ml-1 mb-4">Recentes</h2>
             <div className="space-y-1">
               {history.map((item) => (
-                <HistoryItem 
-                  key={item.id} 
-                  item={item} 
+                <HistoryItem
+                  key={item.id}
+                  item={item}
                   onCopy={() => handleCopy(item.url, item.id)}
                   isRecentlyCopied={copiedHistoryId === item.id}
                 />
