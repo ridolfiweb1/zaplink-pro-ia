@@ -207,9 +207,9 @@ const App: React.FC = () => {
               href="https://ridolfi.com.br"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold rounded-full hover:from-emerald-600 hover:to-teal-600 transition-all shadow-sm hover:shadow-md"
+              className="inline-flex items-center gap-1.5 text-emerald-600 font-semibold hover:text-emerald-700 transition-colors"
             >
-              <span>✨</span> Ridolfi Sistemas & IA
+              <img src="/ridolfi-logo.png" alt="Ridolfi" className="w-5 h-5 rounded" /> Ridolfi - Sistemas & IA
             </a>
           </p>
           <p>Nenhum dado é armazenado em nossos servidores.</p>
