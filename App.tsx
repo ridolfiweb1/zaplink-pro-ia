@@ -209,7 +209,7 @@ const App: React.FC = () => {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-emerald-600 font-semibold hover:text-emerald-700 transition-colors"
             >
-              <img src="/ridolfi-logo.png" alt="Ridolfi" className="w-5 h-5 rounded" /> Ridolfi - Sistemas & IA
+              Ridolfi - Sistemas & IA
             </a>
           </p>
           <p>Nenhum dado é armazenado em nossos servidores.</p>
