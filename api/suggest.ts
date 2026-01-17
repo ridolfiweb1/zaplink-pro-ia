@@ -10,13 +10,13 @@ export default async function handler(req: Request) {
 
   try {
     const { context } = await req.json();
-    
+
     // Usando a API do DeepSeek (compatível com OpenAI)
     const response = await fetch('https://api.deepseek.com/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY || ''}`,
+        'Authorization': `Bearer ${process.env.API_KEY || ''}`,
       },
       body: JSON.stringify({
         model: 'deepseek-chat',
