@@ -199,10 +199,18 @@ const App: React.FC = () => {
         )}
 
         {/* Footer info */}
-        <footer className="mt-12 text-center text-slate-400 text-xs pb-8 space-y-1">
+        <footer className="mt-12 text-center text-slate-400 text-xs pb-8 space-y-2">
           <p>© 2026 ZapLink Pro. Simples, Rápido e Moderno.</p>
-          <p>
-            Desenvolvido por <a href="https://ridolfiweb.com.br" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-500 underline underline-offset-2 transition-colors font-medium">RidolfiWEB</a>
+          <p className="flex items-center justify-center gap-1">
+            Desenvolvido por
+            <a
+              href="https://ridolfi.com.br"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold rounded-full hover:from-emerald-600 hover:to-teal-600 transition-all shadow-sm hover:shadow-md"
+            >
+              <span>✨</span> Ridolfi Sistemas & IA
+            </a>
           </p>
           <p>Nenhum dado é armazenado em nossos servidores.</p>
         </footer>
